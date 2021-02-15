@@ -12,32 +12,19 @@ User = get_user_model()
 
 def home_page(request):
     user = request.user
-    # now = datetime.now()
-    # account = Account.objects.all()
-    # if not user :
-    #     account = Account.objects.all()
-    # else:
-    #     account = Account.objects.get(user=user)
-    allnews= News.objects.all().values_list('id', flat=True)
-    print(allnews)
-    hide = Hide.objects.filter(user=user).values_list("id", flat=True)
-    # filtrat = News.objects.all().exclude(Hide.objects.filter(user=user))
-    # query = (Q(Hide.objects.filter(user=user) | Q(News.objects.all())))
-    print(hide)
-    hide_id = Hide.objects.filter(user=user)
-    hide_list=[]
-    for line in hide_id:
-        hide_list.append(line.news.id)
-    print(hide_id)
-
-    news = News.objects.all().exclude(id__in = hide_list) #not in
-    news_id = news.values_list('id', flat=True)
-    print(news_id)
-
+    news = News.objects.all()
+    # allnews= News.objects.all().values_list('id', flat=True)
+    # hide = Hide.objects.filter(user=user).values_list("id", flat=True)
+    hide_list = []
+    if request.user.is_authenticated:
+        hide_id = Hide.objects.filter(user=user)
+        for line in hide_id:
+            hide_list.append(line.news.id)
+    hide_news = News.objects.all().exclude(id__in = hide_list)
     return render(request, 'news/home_page.html', {
-        "news": news,
+        "hide_news": hide_news,
         "user": user,
-        # "query": query,
+        "news" : news
 
     })
 

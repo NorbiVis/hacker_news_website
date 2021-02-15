@@ -6,3 +6,7 @@
 #tablenav tr {
     background-color: coral;
 }
+
+.homebut {
+    display:inline;
+}
