@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+
+    <div id="divbody">
+        <table id="tablenav">
+            <tr>
+                <td><a href="{% url 'home_page' %}"><b><img src="{% static 'img/logo.gif' %}" alt="logo"></b></a></td>
+                <td>
+                    <a href="{% url 'home_page' %}"><b>Hacker News</b></a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'welcome_page' %}">welcome</a>  |
+                    {% endif %}
+                    <a href="">news</a>  |
+                    <a href="">threads</a>  |
+                    <a href="">past</a>  |
+                    <a href="{% url 'comments' %}">comments</a>  |
+                    <a href="">ask</a>  |
+                    <a href="">show</a>  |
+                    <a href="">jobs</a>  |
+                    <a href="{% url 'create_news' %}"><b>add news</b></a>
+                </td>
+                <td>
+                    {% if user.is_authenticated is False %}
+                        <a href="{% url 'login_view' %}">Login</a>
+                        <a href="{% url 'register' %}">Register</a>
+                    {% else %}
+<!--                        {% if account.karma == None %}-->
+<!--                            ()-->
+<!--                        {% else %}-->
+<!--                            ({{ account.karma }})-->
+<!--                        {% endif %}-->
+                    <a href="{% url 'account_info' %}">  {{user.username}}</a> |
+                        <a href="{% url 'logout_view' %} ">logout</a>
+                    {% endif %}
+                </td>
+
+            
+            
+            
+            </tr>
+        </table>
+        {% block body %}
+        {% endblock %}
+    </div>
+</body>
+</html>

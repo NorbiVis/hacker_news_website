@@ -1,0 +1,14 @@
+{% extends 'news/layout.html' %}
+{% block title %}
+    Login
+{% endblock %}
+
+{% block body %}
+<!-- ce face butonul de action din form -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+
+{% endblock %}

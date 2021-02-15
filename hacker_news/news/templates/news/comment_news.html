@@ -1,0 +1,94 @@
+{% extends 'news/layout.html' %}
+{% block title %} Comment {% endblock %}
+{% block body %}
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <table>
+                <tobdy>
+                    <tr>
+                        <td>rank</td>
+                        <td><form method="post" action="{% url 'like_comments' %}">
+                                {% csrf_token %}
+                                    <input type="hidden" name="news_id" value={{news.id}}>
+                                    {% if user not in news.like.all %}
+                                        <button type="submit">Like</button>
+                                    {% else %}
+                                        <button type="submit">Unlike</button>
+                                    {% endif %}
+
+                                </form>
+                            {% if not news.url %}
+                            {{ news.title }}
+
+                            {% else %}
+                            <a href="{{ line.url }}">{{ news.title }}</a>
+                            ( {{ news.url}} )
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td></td>
+                        <td>{{news.like.all.count}}
+                            {{points}}
+                            by {{news.user}}
+                            hide
+                            {{ news.time }}
+                            <a href="{% url 'comment_news' news.id %}"> {{ counts }} comments </a>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr> </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            {{ news.text }}
+                        </td>
+                    </tr>
+                </tobdy>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Comment</button>
+</form>
+
+<table>
+
+    <tbody>
+    {% for comment in comments %}
+    <tr>
+        <td>
+            <table>
+                <tbody>
+                <tr>
+                    <td></td>
+                    <td>Vote</td>
+                    <td>
+                        <div>
+                            {{ comment.user }} {{ comment.time }}
+                        </div>
+                        <div>
+                            {{ comment.text }}
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

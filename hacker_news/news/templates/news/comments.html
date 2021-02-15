@@ -1,0 +1,34 @@
+{% extends 'news/layout.html' %}
+{% block title %} Comments {% endblock %}
+{% block body %}
+<table>
+
+
+
+    <tbody>
+    {% for comment in comments %}
+    <tr>
+        <td>
+            <table>
+                <tbody>
+                <tr>
+                    <td></td>
+                    <td>Vote</td>
+                    <td>
+                        <div>
+                            {{ comment.user }} {{ comment.time }} on : <a href="{% url 'comment_news' comment.news.id %}">{{ comment.news }}</a>
+                        </div>
+                        <div>
+                            {{ comment.text }}
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

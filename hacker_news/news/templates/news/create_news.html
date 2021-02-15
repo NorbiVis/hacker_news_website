@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create News</title>
+</head>
+<body>
+    <table>
+            <tr>
+                <td><a href="{% url 'home_page' %}"><b><img src="{% static 'img/logo.gif' %}" alt="logo"></td>
+                <td><b>Create NEWS</b></td>
+            </tr>
+            <tr>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+<!--                        <input type="hidden" name="user_id" value="{{ request.user }}">-->
+                          <table>
+                            <tbody>
+<!--                                 <tr>  CUM AS FI PUTUT FACE INPUTUL DE AICI SI NU DIN VIEW    -->
+<!--                                   <td>title</td>-->
+<!--                                   <td>{{ form.user }}</td>-->
+<!--                                </tr>-->
+                                <tr>
+                                   <td>title</td>
+                                   <td>{{ form.title }}</td>
+                                </tr>
+                                <tr>
+                                    <td>url</td>
+                                    <td>{{ form.url }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><b>or</b></td>
+                                </tr>
+                                <tr>
+                                    <td>text</td>
+                                    <td>{{ form.text }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><button type="submit">Submit</button></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><p>Leave url blank to submit a question for discussion. If there is no url, the text (if any) will appear at the top of the thread.</p></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </td>
+            </tr>
+    </table>
+</body>
+</html>
