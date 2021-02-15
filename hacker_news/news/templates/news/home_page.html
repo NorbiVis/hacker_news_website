@@ -20,10 +20,6 @@
                                         {% csrf_token %}
                                         <button type="submit">Like</button>
                                     </form>
-                                    <form class="homebut"  action="{% url 'login_view'%}">
-                                        {% csrf_token %}
-                                        <button  type="submit">Hide</button>
-                                    </form>
                                     {% if not line.url %}
                                     {{ line.title }}
 
@@ -42,9 +38,12 @@
                                         {{ line.like.all.count }} points
                                     {% endif %}
                                   by <a href="{% url 'account_detail' line.user.id %}">{{line.user}}</a>
-                                    {{ line.time | naturaltime}} |
-                                    hide |
-                                     <a href="{% url 'comment_news' line.id %}"> {{line.like.all.count}} comments </a>
+                                    {{ line.time | naturaltime }} |
+                                    <form class="homebut"  action="{% url 'login_view'%}">
+                                        {% csrf_token %}
+                                        <button  type="submit">Hide</button>
+                                    </form> |
+                                     <a href="{% url 'comment_news' line.id %}"> {{line.news.like.all.count}} comments </a>
                                 </td>
                             </tr>
                             <tr></tr>
@@ -102,7 +101,7 @@
                                         {{ line.like.all.count }} points
                                     {% endif %}
                                     by <a href="{% url 'account_detail' line.user.id %}">{{line.user}}</a>
-                                    {{ line.time}} |
+                                    {{ line.time | naturaltime }} |
                                     <form class="homebut" method="post" action="{% url 'hide_news'%}">
                                         {% csrf_token %}
                                         <input type="hidden" name="hide_user" value="{{line.user}}">
@@ -110,7 +109,7 @@
                                         <button  type="submit">Hide</button>
                                     </form> |
                                     {{ dif }}
-                                     <a href="{% url 'comment_news' line.id %}"> {{line.like.all.count}} comments </a>
+                                     <a href="{% url 'comment_news' line.id %}"> comments </a>
                                 </td>
                             </tr>
                             <tr></tr>

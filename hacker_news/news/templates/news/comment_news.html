@@ -1,4 +1,5 @@
 {% extends 'news/layout.html' %}
+{% load humanize %}
 {% block title %} Comment {% endblock %}
 {% block body %}
 <table>
@@ -8,23 +9,26 @@
             <table>
                 <tobdy>
                     <tr>
-                        <td>rank</td>
-                        <td><form method="post" action="{% url 'like_comments' %}">
-                                {% csrf_token %}
+                        <td></td>
+                        <td>
+                            {% if user.is_authenticated %}
+                                <form class="homebut" method="post" action="{% url 'like_comments' %}">
+                                    {% csrf_token %}
                                     <input type="hidden" name="news_id" value={{news.id}}>
                                     {% if user not in news.like.all %}
                                         <button type="submit">Like</button>
                                     {% else %}
                                         <button type="submit">Unlike</button>
                                     {% endif %}
-
                                 </form>
-                            {% if not news.url %}
-                            {{ news.title }}
-
                             {% else %}
+                                <a href="{% url 'login_view' %}"><button>Like</button></a>
+                            {% endif %}
+                            {% if not news.url %}
+                                {{ news.title }}
+                                    {% else %}
                             <a href="{{ line.url }}">{{ news.title }}</a>
-                            ( {{ news.url}} )
+                                ( {{ news.url}} )
                             {% endif %}
                         </td>
                     </tr>
@@ -34,8 +38,17 @@
                         <td>{{news.like.all.count}}
                             {{points}}
                             by {{news.user}}
-                            hide
-                            {{ news.time }}
+                            {{ news.time | naturaltime }} |
+                            {% if user.is_authenticated %}
+                                <form class="homebut" method="post" action="{% url 'hide_news'%}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="hide_user" value="{{news.user}}">
+                                    <input type="hidden" name="hide_news" value="{{news.id}}">
+                                    <button  type="submit">Hide</button> |
+                                </form>
+                            {% else %}
+                                <a href="{% url 'login_view'%}" ><button  type="submit">Hide</button></a> |
+                            {% endif %}
                             <a href="{% url 'comment_news' news.id %}"> {{ counts }} comments </a>
                         </td>
                         <td></td>
@@ -54,15 +67,25 @@
     </tr>
     </tbody>
 </table>
-
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Comment</button>
-</form>
-
+{% if user.is_authenticated %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Comment</button>
+    </form>
+{% else %}
+     <form>
+        {% csrf_token %}
+        {{ form.as_p }}
+    </form>
+<br>
+    <a href="{% url 'login_view' %}"><button> Comment </button></a>
+{% endif %}
+<br>
+<br>
+<br>
+<br>
 <table>
-
     <tbody>
     {% for comment in comments %}
     <tr>
@@ -71,10 +94,10 @@
                 <tbody>
                 <tr>
                     <td></td>
-                    <td>Vote</td>
+                    <td></td>
                     <td>
                         <div>
-                            {{ comment.user }} {{ comment.time }}
+                            {{ comment.user }} {{ comment.time| naturaltime }}
                         </div>
                         <div>
                             {{ comment.text }}

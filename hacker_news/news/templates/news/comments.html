@@ -1,4 +1,5 @@
 {% extends 'news/layout.html' %}
+{% load humanize %}
 {% block title %} Comments {% endblock %}
 {% block body %}
 <table>
@@ -13,10 +14,12 @@
                 <tbody>
                 <tr>
                     <td></td>
-                    <td>Vote</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td>
                         <div>
-                            {{ comment.user }} {{ comment.time }} on : <a href="{% url 'comment_news' comment.news.id %}">{{ comment.news }}</a>
+                            {{ comment.user }} {{ comment.time | naturaltime }} | parent | on : <a href="{% url 'comment_news' comment.news.id %}">{{ comment.news }}</a>
                         </div>
                         <div>
                             {{ comment.text }}
