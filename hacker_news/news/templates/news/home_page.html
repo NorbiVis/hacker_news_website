@@ -41,8 +41,7 @@
                                     {% else %}
                                         {{ line.like.all.count }} points
                                     {% endif %}
-                            {#       by <a href="{% url 'account_detail' account.id %}">{{line.user}}</a>  #}
-                            {#        by <a href="{% url 'account_detail' line.user.account.user %}">{{line.user}}</a> #} {{line.user}}
+                                  by <a href="{% url 'account_detail' line.user.id %}">{{line.user}}</a>
                                     {{ line.time | naturaltime}} |
                                     hide |
                                      <a href="{% url 'comment_news' line.id %}"> {{line.like.all.count}} comments </a>
@@ -102,8 +101,7 @@
                                     {% else %}
                                         {{ line.like.all.count }} points
                                     {% endif %}
-                                {#  by <a href="{% url 'account_detail' account.id %}">{{line.user}}</a> #}{{line.user}}
-    <!--                        {#        by <a href="{% url 'account_detail' line.user.account.user %}">{{line.user}}</a> #} {{line.user}}-->
+                                    by <a href="{% url 'account_detail' line.user.id %}">{{line.user}}</a>
                                     {{ line.time}} |
                                     <form class="homebut" method="post" action="{% url 'hide_news'%}">
                                         {% csrf_token %}

@@ -46,14 +46,14 @@ class Account(models.Model):
         (True, 'Yes'),
         (False, 'No'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE , primary_key=True)
     karma = models.CharField(max_length=3)
     about = models.TextField()
     showdead = models.BooleanField(default=False, choices=boolean_choices)
     nopro = models.BooleanField(default=False, choices=boolean_choices)
 
     def __str__(self):
-        return f"{self.id} -{self.karma}, {self.user}, {self.about}"
+        return f" {self.karma}, {self.user}, {self.about}"
 
 
 class Hide(models.Model):

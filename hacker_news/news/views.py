@@ -29,11 +29,7 @@ def home_page(request):
     })
 
 
-def account_detail(request, acc_id):
-    account = Account.objects.get(pk=acc_id)
-    return render(request, 'news/account_detail.html', {
-        "account": account
-    })
+
 
 
 def like_news(request):
@@ -78,6 +74,12 @@ def like_comments(request):
         like.save()
     return HttpResponseRedirect(reverse('comment_news', args=(news_id,)))
 
+def account_detail(request, pk):
+    account = Account.objects.get(user_id = pk)
+    print(account)
+    return render(request, 'news/account_detail.html', {
+        "account": account
+    })
 
 @login_required
 def account_info(request):
@@ -121,19 +123,14 @@ def comments(request):
     })
 
 
-@login_required
 def comment_news(request, news_id):
-    user = User.objects.get(username=request.user)
+    user = request.user
+    if request.user.is_authenticated:
+        user = User.objects.get(username=request.user)
     news = News.objects.get(pk=news_id)
-    print(news)
-    print(user)
-
     comments = Comment.objects.filter(news=news.id)
-
-
     commentscount = Comment.objects.filter(news=news.id).count()
     form = CommentForm(request.POST or None)
-    # if request.method == "POST":
     if form.is_valid():
         obj = form.save(commit=False)
         obj.news = news
