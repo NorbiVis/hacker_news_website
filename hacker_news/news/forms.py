@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model, authenticate
-from .models import News, Comment, Account
+from .models import News, Comment, Account, ReplayComment
 
 User = get_user_model()
 
@@ -37,7 +37,10 @@ class CommentForm(forms.ModelForm):
         fields = ('text', )
 
 
-
+class ReplayCommentForm(forms.ModelForm):
+    class Meta:
+        model = ReplayComment
+        fields = ('text', )
 
 
 class RegisterForm(forms.Form):

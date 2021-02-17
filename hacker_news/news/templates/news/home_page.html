@@ -43,7 +43,7 @@
                                         {% csrf_token %}
                                         <button  type="submit">Hide</button>
                                     </form> |
-                                     <a href="{% url 'comment_news' line.id %}"> {{line.news.like.all.count}} comments </a>
+                                     <a href="{% url 'comment_news' line.id %}"> {{line.news.comment.all.count}} comments </a>
                                 </td>
                             </tr>
                             <tr></tr>

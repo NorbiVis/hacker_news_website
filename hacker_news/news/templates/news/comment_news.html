@@ -93,17 +93,49 @@
             <table>
                 <tbody>
                 <tr>
-                    <td></td>
-                    <td></td>
                     <td>
                         <div>
-                            {{ comment.user }} {{ comment.time| naturaltime }}
+                          {{ comment.user }} {{ comment.time| naturaltime }}
                         </div>
                         <div>
                             {{ comment.text }}
                         </div>
+                        <div>
+                            <a href="{% url 'comment_replay' comment.id %}">Replay</a>
+                        </div>
+                        <div><div>
+
+                            </div>
+
+                        </div>
+                    </td>
+                    <td>
                     </td>
 
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tbody>
+                            {%for comm in replay %}
+                                {% if comm.comment.id == comment.id %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div>
+                                        {{ comm.user }} {{ comm.time | naturaltime}}
+                                    </div>
+                                    <div class="commpad">
+                                        {{ comm.text }}
+                                    </div>
+                                </td>
+                            </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
                 </tr>
                 </tbody>
             </table>

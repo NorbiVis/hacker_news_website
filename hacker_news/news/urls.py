@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     home_page, register,login_view, logout_view, create_news, comment_news, account_info, account_detail,
-    comments,like_news, welcome_page, past_news_view, like_comments, hide_news
+    comments,like_news, welcome_page, past_news_view, like_comments, hide_news, comment_replay
 )
 
 urlpatterns = [
@@ -18,5 +18,6 @@ urlpatterns = [
     path('like_comments/', like_comments, name="like_comments"),
     path('welcome/', welcome_page, name="welcome_page"),
     path('past_news', past_news_view, name="past_news"),
-    path('hide_news', hide_news, name="hide_news")
+    path('hide_news', hide_news, name="hide_news"),
+    path('comment_replay/<int:pk>', comment_replay, name="comment_replay" )
 ]

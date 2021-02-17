@@ -19,7 +19,9 @@
                     <td></td>
                     <td>
                         <div>
-                            {{ comment.user }} {{ comment.time | naturaltime }} | parent | on : <a href="{% url 'comment_news' comment.news.id %}">{{ comment.news }}</a>
+                            {{ comment.user }} {{ comment.time | naturaltime }} |
+                            <a href=""> </a>
+                            on : <a href="{% url 'comment_news' comment.news.id %}">{{ comment.news }}</a>
                         </div>
                         <div>
                             {{ comment.text }}

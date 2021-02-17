@@ -13,8 +13,7 @@ class News(models.Model):
     text = models.TextField(blank=True)
     time = models.DateTimeField(auto_now_add=True)
     like = models.ManyToManyField(User, default=None, blank=True, related_name="like")
-
-    # comment = models.ManyToManyField(Comment, blank=True )
+    news_comment = models.ManyToManyField("Comment", default=None, blank=True, related_name="comment")
 
     def __str__(self):
         return f" {self.id} {self.title}"
@@ -22,6 +21,9 @@ class News(models.Model):
 
     def num_likes(self):
         return self.like.all().count()
+
+    def num_comments(self):
+        return self.news_comment.all().count()
 
 
 class Like(models.Model):
@@ -35,6 +37,14 @@ class Like(models.Model):
 
 
 class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    news = models.ForeignKey(News, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now_add=True)
+    text = models.TextField()
+
+
+class ReplayComment(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     news = models.ForeignKey(News, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)

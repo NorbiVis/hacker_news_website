@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponseRedirect
-from .forms import RegisterForm, LoginForm, AddNewsForm, CommentForm, AccountForm
+from .forms import RegisterForm, LoginForm, AddNewsForm, CommentForm, AccountForm, ReplayCommentForm
 from django.contrib.auth import get_user_model, authenticate, login, logout
-from .models import News, Comment, Account, Like, Hide
+from .models import News, Comment, Account, Like, Hide, ReplayComment
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.db.models import Q
@@ -129,7 +129,22 @@ def comment_news(request, news_id):
         user = User.objects.get(username=request.user)
     news = News.objects.get(pk=news_id)
     comments = Comment.objects.filter(news=news.id)
+    print(comments)
+    comments_id = Comment.objects.filter(news=news.id).values_list("id", flat=True)
+    # comments_id = Comment.objects.get(news=news.id)
+    # print(comments)
+    print(comments_id)
+    # print(comments_id.id)
     commentscount = Comment.objects.filter(news=news.id).count()
+
+
+
+    all = ReplayComment.objects.filter(comment_id__in = comments_id)
+    print(all)
+    # comm_id = ReplayComment.objects.filter(comment = comments.id)
+    #
+    # print(comm_id)
+
     form = CommentForm(request.POST or None)
     if form.is_valid():
         obj = form.save(commit=False)
@@ -143,7 +158,26 @@ def comment_news(request, news_id):
         "news": news,
         "comments": comments,
         "form": form,
-        "counts": commentscount
+        "counts": commentscount,
+        "replay":all
+    })
+
+
+def comment_replay(request,pk):
+    user = request.user
+    comment = Comment.objects.get(pk=pk)
+    print(comment.news)
+    form = ReplayCommentForm(request.POST or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.comment = comment
+        obj.user = user
+        obj.news = comment.news
+        obj.save()
+        return HttpResponseRedirect(reverse('comment_news', args=(comment.news.id,)))
+    return render(request, 'news/comment_replay.html', {
+        "comment": comment,
+        "form": form,
     })
 
 
@@ -171,7 +205,7 @@ def register(request):
             user = User.objects.create_user(username, email, password)
         except:
             user = None
-        return redirect("home_page")
+        return redirect("login_view")
 
     return render(request, 'news/register.html', {
         'form': form
@@ -202,9 +236,10 @@ def welcome_page(request):
 
 
 def past_news_view(request):
-    today = datetime.today()
+    today = datetime.now()
     print(today)
-    past_news = News.objects.filter(time__gt=datetime(2021, 2, 12,00,00,00))
+    print(today)
+    past_news = News.objects.filter(time__lt = today)
     return render(request, 'news/past_news.html', {
         "past_news": past_news
     })

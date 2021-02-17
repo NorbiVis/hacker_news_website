@@ -22,7 +22,7 @@
                     {% if user.is_authenticated %}
                         <a href="">threads</a>  |
                     {% endif %}
-                    <a href="">past</a>  |
+                    <a href="{% url 'past_news' %}">past</a>  |
                     <a href="{% url 'comments' %}">comments</a>  |
                     <a href="">ask</a>  |
                     <a href="">show</a>  |
