@@ -19,28 +19,20 @@ class AddNewsForm(forms.ModelForm):
     def clean(self):
         url = self.cleaned_data.get('url')
         text = self.cleaned_data.get('text')
-        if not url and not text :
+        if not url and not text:
             raise forms.ValidationError("Fill url or text field.")  # de ce nu imi apare eroarea in pagina
-
-
-    # def clean_text(self):
-    #     url = self.cleaned_data.get('url')
-    #     text = self.cleaned_data.get('text')
-    #     if not url and not text :
-    #         raise forms.ValidationError("Fill url or text field.")  # de ce nu imi apare eroarea in pagina
-    #     return self.clean_data
 
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ('text', )
+        fields = ('text',)
 
 
 class ReplayCommentForm(forms.ModelForm):
     class Meta:
         model = ReplayComment
-        fields = ('text', )
+        fields = ('text',)
 
 
 class RegisterForm(forms.Form):
@@ -48,7 +40,6 @@ class RegisterForm(forms.Form):
     email = forms.EmailField(max_length=30)
     password = forms.CharField(max_length=20, widget=forms.PasswordInput)
     password2 = forms.CharField(max_length=20, widget=forms.PasswordInput, label="Password")
-
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -64,8 +55,7 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError("Invalid email")
         return email
 
-    def clean(self):  # de ce nu merge cu clean_password
-            # de ce trebuie neaparat? merge si fara
+    def clean(self):
         pass1 = self.cleaned_data.get("password")
         pass2 = self.cleaned_data.get("password2")
         if pass1 != pass2:
@@ -79,7 +69,7 @@ class LoginForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        qs = User.objects.filter(username__iexact = username)
+        qs = User.objects.filter(username__iexact=username)
         if not qs.exists():
             raise forms.ValidationError("This is not a registered username")
         return username
@@ -92,6 +82,3 @@ class LoginForm(forms.Form):
             user = authenticate(username=username, password=password)
             if not user:
                 raise forms.ValidationError("Incorrect password")
-
-
-

@@ -5,7 +5,6 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from .models import News, Comment, Account, Like, Hide, ReplayComment
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from django.db.models import Q
 
 User = get_user_model()
 
@@ -20,16 +19,13 @@ def home_page(request):
         hide_id = Hide.objects.filter(user=user)
         for line in hide_id:
             hide_list.append(line.news.id)
-    hide_news = News.objects.all().exclude(id__in = hide_list)
+    hide_news = News.objects.all().exclude(id__in=hide_list).order_by("-time")
     return render(request, 'news/home_page.html', {
         "hide_news": hide_news,
         "user": user,
-        "news" : news
+        "news": news
 
     })
-
-
-
 
 
 def like_news(request):
@@ -50,7 +46,7 @@ def like_news(request):
             else:
                 like.value = "Like"
         like.save()
-    return redirect('home_page')
+    return redirect("home_page")
 
 
 def like_comments(request):
@@ -58,7 +54,6 @@ def like_comments(request):
     news_id = request.POST.get('news_id')
     news_obj = News.objects.get(id=news_id)
     if request.method == "POST":
-        print(news_obj)
         if user in news_obj.like.all():
             news_obj.like.remove(user)
         else:
@@ -74,22 +69,20 @@ def like_comments(request):
         like.save()
     return HttpResponseRedirect(reverse('comment_news', args=(news_id,)))
 
+
 def account_detail(request, pk):
-    account = Account.objects.get(user_id = pk)
+    account = Account.objects.get(user_id=pk)
     print(account)
     return render(request, 'news/account_detail.html', {
         "account": account
     })
 
+
 @login_required
 def account_info(request):
     user = User.objects.get(username=request.user)
     form = AccountForm(request.POST or None)
-    # qs = Account.objects.all()
     qs = Account.objects.filter(user=user)
-    # print(user)
-    # print(user.id)
-    # print(qs)
     if qs.exists():
         karma = request.POST.get('karma')
         about = request.POST.get('about')
@@ -107,7 +100,7 @@ def account_info(request):
     else:
         if form.is_valid():
             obj = form.save(commit=False)
-            # obj.user = user
+            obj.user = user
             obj.save()
 
     return render(request, 'news/account_info.html', {
@@ -117,7 +110,7 @@ def account_info(request):
 
 
 def comments(request):
-    comments = Comment.objects.all()
+    comments = Comment.objects.all().order_by("-time")
     return render(request, 'news/comments.html', {
         'comments': comments
     })
@@ -128,23 +121,10 @@ def comment_news(request, news_id):
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user)
     news = News.objects.get(pk=news_id)
-    comments = Comment.objects.filter(news=news.id)
-    print(comments)
+    comments = Comment.objects.filter(news=news.id).order_by("-time")
+    comments_count = Comment.objects.filter(news=news.id).count()
     comments_id = Comment.objects.filter(news=news.id).values_list("id", flat=True)
-    # comments_id = Comment.objects.get(news=news.id)
-    # print(comments)
-    print(comments_id)
-    # print(comments_id.id)
-    commentscount = Comment.objects.filter(news=news.id).count()
-
-
-
-    all = ReplayComment.objects.filter(comment_id__in = comments_id)
-    print(all)
-    # comm_id = ReplayComment.objects.filter(comment = comments.id)
-    #
-    # print(comm_id)
-
+    replay = ReplayComment.objects.filter(comment_id__in=comments_id).order_by("-time")
     form = CommentForm(request.POST or None)
     if form.is_valid():
         obj = form.save(commit=False)
@@ -158,12 +138,12 @@ def comment_news(request, news_id):
         "news": news,
         "comments": comments,
         "form": form,
-        "counts": commentscount,
-        "replay":all
+        "counts": comments_count,
+        "replay": replay
     })
 
 
-def comment_replay(request,pk):
+def comment_replay(request, pk):
     user = request.user
     comment = Comment.objects.get(pk=pk)
     print(comment.news)
@@ -197,6 +177,7 @@ def create_news(request):
 
 def register(request):
     form = RegisterForm(request.POST or None)
+    acc_form = AccountForm(request.POST or None)
     if form.is_valid():
         username = form.cleaned_data.get("username")
         email = form.cleaned_data.get("email")
@@ -205,14 +186,15 @@ def register(request):
             user = User.objects.create_user(username, email, password)
         except:
             user = None
+        account = Account.objects.create(user=user)
         return redirect("login_view")
 
     return render(request, 'news/register.html', {
-        'form': form
+        'form': form,
     })
 
 
-def login_view(request):  # cum as putea verifica de cate ori a incercat sa se logheze
+def login_view(request):  
     form = LoginForm(request.POST or None)
     if form.is_valid():
         username = form.cleaned_data.get('username')
@@ -239,7 +221,7 @@ def past_news_view(request):
     today = datetime.now()
     print(today)
     print(today)
-    past_news = News.objects.filter(time__lt = today)
+    past_news = News.objects.filter(time__lt=today).order_by("-time")
     return render(request, 'news/past_news.html', {
         "past_news": past_news
     })
@@ -257,3 +239,12 @@ def hide_news(request):
             obj = Hide.objects.create(user=user, news=news_obj)
             obj.save()
     return redirect('home_page')
+
+
+@login_required
+def hidden_news_page(request):
+    user = request.user
+    hidden_news = Hide.objects.filter(user=user)
+    return render(request, 'news/hidden_news.html', {
+        "hidden_news": hidden_news
+    })

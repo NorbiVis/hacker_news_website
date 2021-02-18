@@ -27,7 +27,7 @@
                             {% if not news.url %}
                                 {{ news.title }}
                                     {% else %}
-                            <a href="{{ line.url }}">{{ news.title }}</a>
+                            <a href="{{ news.url }}">{{ news.title }}</a>
                                 ( {{ news.url}} )
                             {% endif %}
                         </td>
@@ -37,7 +37,7 @@
                         <td></td>
                         <td>{{news.like.all.count}}
                             {{points}}
-                            by {{news.user}}
+                            by <a href="{% url 'account_detail' news.user.id %}">{{news.user}}</a>
                             {{ news.time | naturaltime }} |
                             {% if user.is_authenticated %}
                                 <form class="homebut" method="post" action="{% url 'hide_news'%}">
@@ -95,13 +95,17 @@
                 <tr>
                     <td>
                         <div>
-                          {{ comment.user }} {{ comment.time| naturaltime }}
+                         <a href="{% url 'account_detail' comment.user.id %}">{{ comment.user }}</a>  {{ comment.time| naturaltime }}
                         </div>
                         <div>
                             {{ comment.text }}
                         </div>
                         <div>
-                            <a href="{% url 'comment_replay' comment.id %}">Replay</a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'comment_replay' comment.id %}">Replay</a>
+                            {% else %}
+                                <a href="{% url 'login_view' %}">Replay</a>
+                            {% endif %}
                         </div>
                         <div><div>
 
@@ -124,7 +128,7 @@
                                 <td></td>
                                 <td>
                                     <div>
-                                        {{ comm.user }} {{ comm.time | naturaltime}}
+                                       <a href="{% url 'account_detail' comm.user.id %}">{{ comm.user }}</a>  {{ comm.time | naturaltime}}
                                     </div>
                                     <div class="commpad">
                                         {{ comm.text }}
@@ -144,6 +148,5 @@
     {% endfor %}
     </tbody>
 </table>
-
 
 {% endblock %}

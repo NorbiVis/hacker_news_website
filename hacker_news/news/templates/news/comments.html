@@ -3,9 +3,8 @@
 {% block title %} Comments {% endblock %}
 {% block body %}
 <table>
-
-
-
+    <br>
+    <br>
     <tbody>
     {% for comment in comments %}
     <tr>
@@ -19,8 +18,9 @@
                     <td></td>
                     <td>
                         <div>
-                            {{ comment.user }} {{ comment.time | naturaltime }} |
-                            <a href=""> </a>
+                            <a href="{% url 'account_detail' comment.user.id %}"> {{ comment.user }} </a>
+                            {{ comment.time | naturaltime }} |
+
                             on : <a href="{% url 'comment_news' comment.news.id %}">{{ comment.news }}</a>
                         </div>
                         <div>

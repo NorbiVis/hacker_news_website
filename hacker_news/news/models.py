@@ -1,9 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from datetime import datetime
 
 User = get_user_model()
-from django.contrib.humanize.templatetags import humanize
 
 
 class News(models.Model):
@@ -17,7 +15,6 @@ class News(models.Model):
 
     def __str__(self):
         return f" {self.id} {self.title}"
-
 
     def num_likes(self):
         return self.like.all().count()
@@ -56,8 +53,8 @@ class Account(models.Model):
         (True, 'Yes'),
         (False, 'No'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE , primary_key=True)
-    karma = models.CharField(max_length=3)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    karma = models.CharField(max_length=3, default=1)
     about = models.TextField()
     showdead = models.BooleanField(default=False, choices=boolean_choices)
     nopro = models.BooleanField(default=False, choices=boolean_choices)

@@ -51,7 +51,6 @@
                     </table>
                 </td>
             </tr>
-
             </tbody>
         </table>
         {% endfor %}
@@ -78,15 +77,12 @@
                                         {% else %}
                                             <button  type="submit">Unlike</button>
                                         {% endif %}
-
                                     </form>
-
                                     {% if not line.url %}
-                                    {{ line.title }}
-
+                                        {{ line.title }}
                                     {% else %}
-                                    <a href="{{ line.url }}">{{ line.title }}</a>
-                                    ( {{ line.url}} )
+                                        <a href="{{ line.url }}">{{ line.title }}</a>
+                                        ( {{ line.url}} )
                                     {% endif %}
                                 </td>
                             </tr>
@@ -108,7 +104,6 @@
                                         <input type="hidden" name="hide_news" value="{{line.id}}">
                                         <button  type="submit">Hide</button>
                                     </form> |
-                                    {{ dif }}
                                      <a href="{% url 'comment_news' line.id %}"> comments </a>
                                 </td>
                             </tr>
