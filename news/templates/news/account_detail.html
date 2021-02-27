@@ -1,0 +1,28 @@
+{% extends 'news/layout.html' %}
+{% block title %} Account Info {% endblock %}
+{% block body %}
+
+<table>
+    <tbody>
+    <tr></tr><br>
+    <tr>
+        <td>user:</td>
+        <td>{{ account.user }}</td>
+    </tr>
+    <tr>
+        <td>created:</td>
+        <td>{{ account.user.date_joined }}</td>
+    </tr>
+    <tr>
+        <td>karma:</td>
+        <td>{{ account.karma }}</td>
+    </tr>
+    <tr>
+        <td>about:</td>
+        <td>{{ account.about }}</td>
+    </tr>
+    </tbody>
+</table>
+
+
+{% endblock %}

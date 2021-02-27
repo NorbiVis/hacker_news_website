@@ -1,0 +1,39 @@
+{% extends 'news/layout.html' %}
+{% load humanize %}
+{% block title %} Comments {% endblock %}
+{% block body %}
+<table>
+    <br>
+    <br>
+    <tbody>
+    {% for comment in comments %}
+    <tr>
+        <td>
+            <table>
+                <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div>
+                            <a href="{% url 'account_detail' comment.user.id %}"> {{ comment.user }} </a>
+                            {{ comment.time | naturaltime }} |
+
+                            on : <a href="{% url 'comment_news' comment.news.id %}">{{ comment.news }}</a>
+                        </div>
+                        <div>
+                            {{ comment.text }}
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

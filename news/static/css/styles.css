@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#tablenav tr {
+    background-color: coral;
+}
+
+.homebut {
+    display:inline;
+}
+
+.commpad {
+    padding-left: 30px;
+}

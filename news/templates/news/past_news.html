@@ -1,0 +1,60 @@
+{% extends 'news/layout.html' %}
+{% load humanize %}
+{% block title %} News {% endblock %}
+{% block body %}
+<br>
+<br>
+<br>
+ {% for line in past_news %}
+    <table>
+        <tbody>
+        <tr>
+            <td>
+                <table>
+                    <tobdy>
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                {% if user.is_authenticated %}
+                                    <form class="homebut" method="post" action="{% url 'like_news' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="news_id" value={{line.id}}>
+                                        {% if user not in line.like.all %}
+                                            <button type="submit">Like</button>
+                                        {% else %}
+                                            <button type="submit">Unlike</button>
+                                        {% endif %}
+                                    </form>
+                                {% else %}
+                                    <form class="homebut" action="{% url 'login_view' %}">
+                                        {% csrf_token %}
+                                        <button type="submit">Like</button>
+                                    </form>
+                                {% endif %}
+                                {% if not line.url %}
+                                    {{ line.title }}
+                                {% else %}
+                                    <a href="{{ line.url }}">{{ line.title }}</a>
+                                    ( {{ line.url}} )
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <td></td>
+                            <td>{{ line.like.all.count }}
+                                by <a href="{% url 'account_detail' line.user.id %}">{{line.user}}</a>
+                                hide
+                                {{ line.time | naturaltime }}
+                                 <a href="{% url 'comment_news' line.id %}">comments </a>
+                            </td>
+                        </tr>
+                        <tr></tr>
+                    </tobdy>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    {% endfor %}
+{% endblock %}

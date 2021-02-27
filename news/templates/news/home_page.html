@@ -1,0 +1,126 @@
+{% extends 'news/layout.html' %}
+{% load humanize %}
+{% block title %} Home Page {% endblock %}
+{% block body %}
+<div>
+    <br>
+    <br>
+    {% if not user.is_authenticated %}
+        {% for line in news %}
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <table>
+                        <tobdy>
+
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><form class="homebut" action="{% url 'login_view' %}">
+                                        {% csrf_token %}
+                                        <button type="submit">Like</button>
+                                    </form>
+                                    {% if not line.url %}
+                                    {{ line.title }}
+
+                                    {% else %}
+                                    <a href="{{ line.url }}">{{ line.title }}</a>
+                                    ( {{ line.url}} )
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr></tr>
+                            <tr>
+                                <td></td>
+                                <td>{% if line.like.all.count == 1 %}
+                                        {{ line.like.all.count }} point
+                                    {% else %}
+                                        {{ line.like.all.count }} points
+                                    {% endif %}
+                                  by <a href="{% url 'account_detail' line.user.id %}">{{line.user}}</a>
+                                    {{ line.time | naturaltime }} |
+                                    <form class="homebut"  action="{% url 'login_view'%}">
+                                        {% csrf_token %}
+                                        <button  type="submit">Hide</button>
+                                    </form> |
+                                     <a href="{% url 'comment_news' line.id %}"> {{line.news.comment.all.count}} comments </a>
+                                </td>
+                            </tr>
+                            <tr></tr>
+                        </tobdy>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        {% endfor %}
+    {% endif %}
+</div>
+<div>
+    {% if user.is_authenticated %}
+        {% for line in hide_news %}
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <table>
+                        <tobdy>
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td></td>
+                                <td></td>
+                                <td><form class="homebut" method="post" action="{% url 'like_news' %}">
+                                    {% csrf_token %}
+                                        <input type="hidden" name="news_id" value={{line.id}}>
+                                        {% if user not in line.like.all %}
+                                            <button type="submit">Like</button>
+                                        {% else %}
+                                            <button  type="submit">Unlike</button>
+                                        {% endif %}
+                                    </form>
+                                    {% if not line.url %}
+                                        {{ line.title }}
+                                    {% else %}
+                                        <a href="{{ line.url }}">{{ line.title }}</a>
+                                        ( {{ line.url}} )
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr></tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{% if line.like.all.count == 1 %}
+                                        {{ line.like.all.count }} point
+                                    {% else %}
+                                        {{ line.like.all.count }} points
+                                    {% endif %}
+                                    by <a href="{% url 'account_detail' line.user.id %}">{{line.user}}</a>
+                                    {{ line.time | naturaltime }} |
+                                    <form class="homebut" method="post" action="{% url 'hide_news'%}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="hide_user" value="{{line.user}}">
+                                        <input type="hidden" name="hide_news" value="{{line.id}}">
+                                        <button  type="submit">Hide</button>
+                                    </form> |
+                                     <a href="{% url 'comment_news' line.id %}"> comments </a>
+                                </td>
+                            </tr>
+                            <tr></tr>
+                        </tobdy>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<form method="get" action="{% url 'search' %}">
+    {{ search_form.text }}
+    <button type="submit">Search</button>
+</form>
+
+{% endblock %}
