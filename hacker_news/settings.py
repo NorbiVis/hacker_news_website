@@ -148,6 +148,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 SITE_ID = 1
 
-
 import django_heroku
 django_heroku.settings(locals())
