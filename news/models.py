@@ -10,7 +10,7 @@ class News(models.Model):
     url = models.URLField(max_length=200, blank=True)
     text = models.TextField(blank=True)
     time = models.DateTimeField(auto_now_add=True)
-    like = models.ManyToManyField(User, default=None, blank=True, related_name="like")
+    like = models.ManyToManyField(User, default=None, blank=True, null = True, related_name="like")
     news_comment = models.ManyToManyField("Comment", default=None, blank=True, related_name="comment")
 
     def __str__(self):
@@ -70,7 +70,3 @@ class Hide(models.Model):
     def __str__(self):
         return f"{self.user} {self.news}"
 
-
-class Test(models.Model):
-    test = models.CharField(max_length=30)
-    test2 = models.IntegerField()
