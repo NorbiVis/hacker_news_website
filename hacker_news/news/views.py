@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponseRedirect
-from .forms import RegisterForm, LoginForm, AddNewsForm, CommentForm, AccountForm, ReplayCommentForm
+from .forms import RegisterForm, LoginForm, AddNewsForm, CommentForm, AccountForm, ReplayCommentForm, SearchForm
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from .models import News, Comment, Account, Like, Hide, ReplayComment
 from django.contrib.auth.decorators import login_required
@@ -10,6 +10,7 @@ User = get_user_model()
 
 
 def home_page(request):
+    search_form = SearchForm(request.GET or None)
     user = request.user
     news = News.objects.all()
     # allnews= News.objects.all().values_list('id', flat=True)
@@ -23,7 +24,8 @@ def home_page(request):
     return render(request, 'news/home_page.html', {
         "hide_news": hide_news,
         "user": user,
-        "news": news
+        "news": news,
+        "search_form": search_form
 
     })
 
@@ -131,7 +133,6 @@ def comment_news(request, news_id):
         obj.news = news
         obj.user = user
         obj.save()
-        form = CommentForm()
         return HttpResponseRedirect(reverse('comment_news', args=(news.id,)))
     return render(request, 'news/comment_news.html', {
         "user": user,
@@ -194,7 +195,7 @@ def register(request):
     })
 
 
-def login_view(request):  
+def login_view(request):
     form = LoginForm(request.POST or None)
     if form.is_valid():
         username = form.cleaned_data.get('username')
@@ -248,3 +249,12 @@ def hidden_news_page(request):
     return render(request, 'news/hidden_news.html', {
         "hidden_news": hidden_news
     })
+
+
+def search(request):
+    search_news = News.objects.filter(title__icontains='a')
+    return render(request, 'news/search.html', {
+        "search_news": search_news
+    })
+
+

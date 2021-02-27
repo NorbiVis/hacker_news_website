@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,8 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'news',
-    'django.contrib.humanize'
+    'django.contrib.humanize',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'social_django',
+
 ]
 
 MIDDLEWARE = [
@@ -71,6 +79,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hacker_news.wsgi.application'
 
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+
+)
+
+LOGIN_URL = 'login_view'
+LOGIN_REDIRECT_URL = 'home_page'
+LOGOUT_URL = 'logout_view'
+LOGOUT_REDIRECT_URL = 'login_view'
+
+SOCIAL_AUTH_FACEBOOK_KEY = "765394957741704"        # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = "0268704a189d32aa4ca84a70f67698fe"  # App Secret
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -121,3 +143,9 @@ DATETIME_INPUT_FORMATS = '%Y-%m-%d %H:%M:%S.%f'
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SITE_ID = 1
+
+
+import django_heroku
+django_heroku.settings(locals())

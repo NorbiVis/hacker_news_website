@@ -82,3 +82,7 @@ class LoginForm(forms.Form):
             user = authenticate(username=username, password=password)
             if not user:
                 raise forms.ValidationError("Incorrect password")
+
+
+class SearchForm(forms.Form):
+    text = forms.CharField(max_length=20)

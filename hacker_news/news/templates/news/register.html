@@ -1,4 +1,7 @@
 {% extends 'news/layout.html' %}
+{% load socialaccount %}
+{% providers_media_js %}
+
 {% block title %}
     Register
 {% endblock %}
@@ -9,4 +12,5 @@
         {{ form.as_p }}
         <button type="submit">Register</button>
     </form>
+    <a href="{% provider_login_url 'facebook' methods='js_sdk' %}"> Facebook Connect</a>
 {% endblock %}

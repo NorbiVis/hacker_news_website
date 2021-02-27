@@ -117,4 +117,10 @@
         {% endfor %}
     {% endif %}
 </div>
+
+<form method="get" action="{% url 'search' %}">
+    {{ search_form.text }}
+    <button type="submit">Search</button>
+</form>
+
 {% endblock %}

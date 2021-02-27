@@ -2,6 +2,7 @@ from django.urls import path
 from .views import (
     home_page, register,login_view, logout_view, create_news, comment_news, account_info, account_detail,
     comments,like_news, welcome_page, past_news_view, like_comments, hide_news, comment_replay,hidden_news_page,
+    search,
 )
 
 urlpatterns = [
@@ -21,4 +22,5 @@ urlpatterns = [
     path('hide_news', hide_news, name="hide_news"),
     path('hidden_news_page', hidden_news_page, name="hidden_news_page"),
     path('comment_replay/<int:pk>', comment_replay, name="comment_replay" ),
+    path('search', search, name="search" )
 ]
