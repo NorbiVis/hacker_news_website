@@ -69,3 +69,8 @@ class Hide(models.Model):
 
     def __str__(self):
         return f"{self.user} {self.news}"
+
+
+class Test(models.Model):
+    test = models.CharField(max_length=30)
+    test2 = models.IntegerField()
