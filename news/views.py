@@ -13,16 +13,15 @@ def home_page(request):
     search_form = SearchForm(request.GET or None)
     user = request.user
     news = News.objects.all()
-    # allnews= News.objects.all().values_list('id', flat=True)
-    # hide = Hide.objects.filter(user=user).values_list("id", flat=True)
-    # hide_list = []
-    # if request.user.is_authenticated:
-    #     hide_id = Hide.objects.filter(user=user)
-    #     for line in hide_id:
-    #         hide_list.append(line.news.id)
-    # hide_news = News.objects.all().exclude(id__in=hide_list).order_by("-time")
+    hide_list = []
+    if user.is_authenticated:
+        hide_id = Hide.objects.filter(user=user)
+        for line in hide_id:
+            hide_list.append(line.news.id)
+
+    hide_news = News.objects.all().exclude(id__in=hide_list).order_by("-time")
     return render(request, 'news/home_page.html', {
-        # "hide_news": hide_news,
+        "hide_news": hide_news,
         "user": user,
         "news": news,
         "search_form": search_form
