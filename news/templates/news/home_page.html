@@ -43,7 +43,7 @@
                                         {% csrf_token %}
                                         <button  type="submit">Hide</button>
                                     </form> |
-                                     <a href="{% url 'comment_news' line.id %}"> {{line.news.comment.all.count}} comments </a>
+                                     <a href="{% url 'comment_news' line.id %}"> {{ count }} comments </a>
                                 </td>
                             </tr>
                             <tr></tr>
@@ -72,6 +72,7 @@
                                 <td><form class="homebut" method="post" action="{% url 'like_news' %}">
                                     {% csrf_token %}
                                         <input type="hidden" name="news_id" value={{line.id}}>
+                                         <input type="hidden" name="path" value="home_page">
                                         {% if user not in line.like.all %}
                                             <button type="submit">Like</button>
                                         {% else %}
@@ -102,9 +103,9 @@
                                         {% csrf_token %}
                                         <input type="hidden" name="hide_user" value="{{line.user}}">
                                         <input type="hidden" name="hide_news" value="{{line.id}}">
-                                        <button  type="submit">Hide</button>
-                                    </form> |
-                                     <a href="{% url 'comment_news' line.id %}"> comments </a>
+                                        <button  type="submit">Hide</button> |
+                                    </form>
+                                     <a href="{% url 'comment_news' line.id %}"> {{ count }} comments </a>
                                 </td>
                             </tr>
                             <tr></tr>
@@ -117,10 +118,14 @@
         {% endfor %}
     {% endif %}
 </div>
-
+<br>
+<br>
+<footer>
 <form method="get" action="{% url 'search' %}">
-    {{ search_form.text }}
+    <input type="search" name="search">
     <button type="submit">Search</button>
 </form>
+</footer>
+
 
 {% endblock %}

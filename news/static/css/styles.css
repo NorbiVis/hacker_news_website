@@ -14,3 +14,46 @@
 .commpad {
     padding-left: 30px;
 }
+
+#divbody {
+   position: fixed;
+   left: 5%;
+   right: 5%;
+   background-color: rgb(247, 232, 211);
+   height:100%;
+}
+
+#navtd a{
+    margin: 5px;
+}
+
+#navtr td{
+    margin:40px
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button {
+    background-color: rgb(255, 145, 81);
+    border-radius: 15%;
+}
+
+footer {
+
+    position: relative;
+    
+    text-align: center;
+
+}
+
+#auth {
+    padding-left: 400px;
+    
+}

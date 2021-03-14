@@ -84,5 +84,3 @@ class LoginForm(forms.Form):
                 raise forms.ValidationError("Incorrect password")
 
 
-class SearchForm(forms.Form):
-    text = forms.CharField(max_length=20)
