@@ -15,9 +15,9 @@ def home_page(request):
     news = News.objects.all()
     hide_list = []
 
-    hide_id = Hide.objects.filter(user=user)
-    for line in hide_id:
-        hide_list.append(line.news.id)
+    # hide_id = Hide.objects.filter(user=user)
+    # for line in hide_id:
+    #     hide_list.append(line.news.id)
 
     hide_news = News.objects.all().exclude(id__in=hide_list).order_by("-time")
     return render(request, 'news/home_page.html', {
