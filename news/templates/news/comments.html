@@ -11,6 +11,7 @@
         <td>
             <table>
                 <tbody>
+
                 <tr>
                     <td></td>
                     <td></td>
@@ -18,6 +19,7 @@
                     <td></td>
                     <td>
                         <div>
+                            {{ forloop.counter }}.
                             <a href="{% url 'account_detail' comment.user.id %}"> {{ comment.user }} </a>
                             {{ comment.time | naturaltime }} |
 

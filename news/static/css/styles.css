@@ -3,9 +3,7 @@
     padding: 0;
 }
 
-#tablenav tr {
-    background-color: coral;
-}
+
 
 .homebut {
     display:inline;
@@ -57,3 +55,9 @@ footer {
     padding-left: 400px;
     
 }
+
+#navcenter{
+    background-color:coral;
+    
+}
+

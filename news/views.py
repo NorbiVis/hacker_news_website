@@ -14,11 +14,10 @@ def home_page(request):
     user = request.user
     news = News.objects.all()
     hide_list = []
-
-    # hide_id = Hide.objects.filter(user=user)
-    # for line in hide_id:
-    #     hide_list.append(line.news.id)
-
+    if user.is_authenticated:
+        hide_id = Hide.objects.filter(user=user)
+        for line in hide_id:
+            hide_list.append(line.news.id)
     hide_news = News.objects.all().exclude(id__in=hide_list).order_by("-time")
     return render(request, 'news/home_page.html', {
         "hide_news": hide_news,
@@ -53,7 +52,7 @@ def like_news(request):
 
 
 def like_comments(request):
-    user = request.userg
+    user = request.user
     news_id = request.POST.get('news_id')
     news_obj = News.objects.get(id=news_id)
     if request.method == "POST":
@@ -226,9 +225,9 @@ def past_news_view(request):
 
 def new_news_view(request):
     today = datetime.now() - timedelta(days=1)
-    past_news = News.objects.filter(time__gte=today).order_by("-time")
+    new_news = News.objects.filter(time__gte=today).order_by("-time")
     return render(request, 'news/past_news.html', {
-        "past_news": past_news
+        "past_news": new_news
     })
 
 

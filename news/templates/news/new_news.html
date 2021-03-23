@@ -5,7 +5,7 @@
 <br>
 <br>
 <br>
- {% for line in past_news %}
+ {% for line in new_news %}
     <table>
         <tbody>
         <tr>
@@ -45,8 +45,15 @@
                             <td></td>
                             <td>{{ line.like.all.count }}
                                 by <a href="{% url 'account_detail' line.user.id %}">{{line.user}}</a>
-                                hide
-                                {{ line.time | naturaltime }}
+                                {{ line.time | naturaltime }} |
+                                {% if user.is_authenticated %}
+                                <form class="homebut" method="post" action="{% url 'hide_news'%}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="hide_user" value="{{line.user}}">
+                                        <input type="hidden" name="hide_news" value="{{line.id}}">
+                                        <button  type="submit">Hide</button> |
+                                    </form>
+                                {% endif %}
                                  <a href="{% url 'comment_news' line.id %}">comments </a>
                             </td>
                         </tr>

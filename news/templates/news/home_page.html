@@ -15,7 +15,7 @@
                         <tobdy>
 
                             <tr>
-                                <td>{{ forloop.counter }}</td>
+                                <td>{{ forloop.counter }}.</td>
                                 <td><form class="homebut" action="{% url 'login_view' %}">
                                         {% csrf_token %}
                                         <button type="submit">Like</button>
